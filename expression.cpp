@@ -73,64 +73,24 @@ std::string Expression::getsymbol() const {
     return this->s;
 }
 
-double Expression::getnumber() const {
-    if (this->type != NUMBER) {
-        throw InterpreterSemanticError(
-            "Error: expected expression to evaluate to Number");
-    }
-    return this->d;
-}
-
 double Expression::getnumber(Environment & env) const {
-    return this->eval(env).getnumber();
-}
-
-bool Expression::getbool() const {
-    if (this->type != BOOL) {
-        throw InterpreterSemanticError(
-            "Error: expected expression to evaluate to Bool");
-    }
-    return this->b;
+    return this->eval(env, NUMBER).d;
 }
 
 bool Expression::getbool(Environment & env) const {
-    return this->eval(env).getbool();
-}
-
-Point Expression::getpoint() const {
-    if (this->type != POINT) {
-        throw InterpreterSemanticError(
-            "Error: expected expression to evaluate to Point");
-    }
-    return this->p;
+    return this->eval(env, BOOL).b;
 }
 
 Point Expression::getpoint(Environment & env) const {
-    return this->eval(env).getpoint();
-}
-
-Line Expression::getline() const {
-    if (this->type != LINE) {
-        throw InterpreterSemanticError(
-            "Error: expected expression to evaluate to Line");
-    }
-    return this->l;
+    return this->eval(env, POINT).p;
 }
 
 Line Expression::getline(Environment & env) const {
-    return this->eval(env).getline();
-}
-
-Arc Expression::getarc() const {
-    if (this->type != ARC) {
-        throw InterpreterSemanticError(
-            "Error: expected expression to evaluate to Arc");
-    }
-    return this->a;
+    return this->eval(env, LINE).l;
 }
 
 Arc Expression::getarc(Environment & env) const {
-    return this->eval(env).getarc();
+    return this->eval(env, ARC).a;
 }
 
 bool Expression::operator==(const Expression & exp) const noexcept {
@@ -162,6 +122,15 @@ Args Expression::getargs() const {
 Expression Expression::eval(Environment & env) const {
     if (this->type != SYMBOL) { return *this; }
     return env.retrieve(this->s)(this->arguments, env);
+}
+
+Expression Expression::eval(Environment & env, Type t) const {
+    Expression res = this->eval(env);
+    if (res.type != t) {
+        throw InterpreterSemanticError(
+            "Error: expected expression to evaluate to a different type");
+    }
+    return res;
 }
 
 std::string point_to_string(Point p) {

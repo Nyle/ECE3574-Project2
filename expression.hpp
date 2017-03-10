@@ -60,25 +60,15 @@ public:
     Expression(const Expression & exp);
     // Returns the symbol
     std::string getsymbol() const;
-    // returns the literal numerical value
-    double getnumber() const;
     // Evaluates and returns numerical result
     double getnumber(Environment & env) const;
-    // returns the literal boolean value
-    bool getbool() const;
     // Evaluates and returns boolean result
     bool getbool(Environment & env) const;
     // Returns literal Point value
-    Point getpoint() const;
-    // Evaluates and returns Point result
     Point getpoint(Environment & env) const;
     // Returns literal Line value
-    Line getline() const;
-    // Evaluates and returns Line result
     Line getline(Environment & env) const;
     // Returns literal Arc value
-    Arc getarc() const;
-    // Evaluates and returns Arc result
     Arc getarc(Environment & env) const;
     // Equality operator for two Expressions, two expressions are equal if the
     // have the same type, atom value, and number of arguments
@@ -89,6 +79,9 @@ public:
     Args getargs() const;
     // Return the result of evaluating this expression
     Expression eval(Environment & env) const;
+    // Return the result of evaluating this expression, checking that the
+    // result is the correct type
+    Expression eval(Environment & env, Type t) const;
     // Return the attom as a string
     std::string to_string() const;
 };

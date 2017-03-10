@@ -55,19 +55,8 @@ TEST_CASE("Test adding argument to String type expression",
     REQUIRE_NOTHROW(exp.addargument(arg));
 }
 
-TEST_CASE("Test getting Bool value from non Bool expression", "[expression]") {
-    Expression exp = Expression();
-    REQUIRE_THROWS_AS(exp.getbool(), InterpreterSemanticError);
-}
-
 TEST_CASE("Test getting Symbol value from non Symbol expression",
           "[expression]") {
     Expression exp = Expression();
     REQUIRE_THROWS_AS(exp.getsymbol(), InterpreterSemanticError);
-}
-
-TEST_CASE("Test getting Number value from non Number expression",
-          "[expression]") {
-    Expression exp = Expression();
-    REQUIRE_THROWS_AS(exp.getnumber(), InterpreterSemanticError);
 }
