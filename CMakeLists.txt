@@ -18,6 +18,7 @@ set(interpreter_src
   tokenize.hpp tokenize.cpp
   expression.hpp expression.cpp
   environment.hpp environment.cpp
+  environmentprocedures.hpp environmentprocedures.cpp
   interpreter.hpp interpreter.cpp
   )
 
