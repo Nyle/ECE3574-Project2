@@ -6,45 +6,67 @@
 #include <sstream>
 
 Expression::Expression() {
-    this->type = None;
+    this->type = NONE;
     this->arguments = Args();
 }
 
 Expression::Expression(bool value) : Expression() {
-    this->type = Bool;
+    this->type = BOOL;
     this->b = value;
 }
 
 Expression::Expression(double value) : Expression() {
-    this->type = Number;
+    this->type = NUMBER;
     this->d = value;
 }
 
 Expression::Expression(const std::string & value) : Expression() {
-    this->type = Symbol;
+    this->type = SYMBOL;
     this->s = value;
+}
+
+Expression::Expression(const Point & value) : Expression() {
+    this->type = POINT;
+    this->p = value;
+}
+
+Expression::Expression(const Point & p1, const Point & p2) : Expression() {
+    this->type = LINE;
+    this->l = {p1, p2};
+}
+
+Expression::Expression(const Point & center, const Point & start,
+                       double angle) : Expression() {
+    this->type = ARC;
+    this->a = {center, start, angle};
 }
 
 Expression::Expression(const Expression & exp) {
     this->type = exp.type;
     switch(this->type) {
-    case None:
+    case NONE:
         break;
-    case Bool:
+    case BOOL:
         this->b = exp.b;
         break;
-    case Number:
+    case NUMBER:
         this->d = exp.d;
         break;
-    case Symbol:
+    case SYMBOL:
         this->s = exp.s;
         break;
+    case POINT:
+        this->p = exp.p;
+    case LINE:
+        this->l = exp.l;
+    case ARC:
+        this->a = exp.a;
     }
     this->arguments = Args(exp.arguments);
 }
 
 std::string Expression::getsymbol() const {
-    if (this->type != Symbol) {
+    if (this->type != SYMBOL) {
         throw InterpreterSemanticError(
             "Error: expected expression to be of type Symbol");
     }
@@ -52,7 +74,7 @@ std::string Expression::getsymbol() const {
 }
 
 double Expression::getnumber() const {
-    if (this->type != Number) {
+    if (this->type != NUMBER) {
         throw InterpreterSemanticError(
             "Error: expected expression to evaluate to Number");
     }
@@ -64,7 +86,7 @@ double Expression::getnumber(Environment & env) const {
 }
 
 bool Expression::getbool() const {
-    if (this->type != Bool) {
+    if (this->type != BOOL) {
         throw InterpreterSemanticError(
             "Error: expected expression to evaluate to Bool");
     }
@@ -75,19 +97,58 @@ bool Expression::getbool(Environment & env) const {
     return this->eval(env).getbool();
 }
 
+Point Expression::getpoint() const {
+    if (this->type != POINT) {
+        throw InterpreterSemanticError(
+            "Error: expected expression to evaluate to Point");
+    }
+    return this->p;
+}
+
+Point Expression::getpoint(Environment & env) const {
+    return this->eval(env).getpoint();
+}
+
+Line Expression::getline() const {
+    if (this->type != LINE) {
+        throw InterpreterSemanticError(
+            "Error: expected expression to evaluate to Line");
+    }
+    return this->l;
+}
+
+Line Expression::getline(Environment & env) const {
+    return this->eval(env).getline();
+}
+
+Arc Expression::getarc() const {
+    if (this->type != ARC) {
+        throw InterpreterSemanticError(
+            "Error: expected expression to evaluate to Arc");
+    }
+    return this->a;
+}
+
+Arc Expression::getarc(Environment & env) const {
+    return this->eval(env).getarc();
+}
+
 bool Expression::operator==(const Expression & exp) const noexcept {
     return this->type == exp.type && ( // Same type
         // Same value
-        this->type == None ||
-        (this->type == Bool && this->b == exp.b) ||
-        (this->type == Number && this->d == exp.d) ||
-        (this->type == Symbol && this->s == exp.s)) &&
+        this->type == NONE ||
+        (this->type == BOOL && this->b == exp.b) ||
+        (this->type == NUMBER && this->d == exp.d) ||
+        (this->type == SYMBOL && this->s == exp.s) ||
+        (this->type == POINT && this->p == exp.p) ||
+        (this->type == LINE && this->l == exp.l) ||
+        (this->type == ARC && this->a == exp.a)) &&
         // Same number of arguments
         this->arguments.size() == exp.arguments.size();
 }
 
 void Expression::addargument(Expression exp) {
-    if (this->type != Symbol) {
+    if (this->type != SYMBOL) {
         throw InterpreterSyntaxError(
             "Error: only symbols can have arguments");
     }
@@ -99,25 +160,39 @@ Args Expression::getargs() const {
 }
 
 Expression Expression::eval(Environment & env) const {
-    if (this->type != Symbol) { return *this; }
+    if (this->type != SYMBOL) { return *this; }
     return env.retrieve(this->s)(this->arguments, env);
+}
+
+std::string point_to_string(Point p) {
+    return std::to_string(std::get<0>(p)) + "," +
+        std::to_string(std::get<1>(p));
 }
 
 std::string Expression::to_string() const {
     std::stringstream tmp;
     switch (this->type) {
-    case None:
-        return "()";
+    case NONE:
+        return "None";
         break;
-    case Bool:
+    case BOOL:
         return (this->b ? "True" : "False");
         break;
-    case Number:
+    case NUMBER:
         tmp << this->d;
         return tmp.str();
         break;
-    case Symbol:
+    case SYMBOL:
         return this->s;
+    case POINT:
+        return point_to_string(this->p);
+    case LINE:
+        return "(" + point_to_string(this->l.p1) + "),(" +
+            point_to_string(this->l.p2) + ")";
+    case ARC:
+        return "(" + point_to_string(this->a.center) + "),(" +
+            point_to_string(this->a.start) + ")," +
+            std::to_string(this->a.angle);
     }
 }
 
