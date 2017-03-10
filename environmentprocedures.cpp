@@ -3,7 +3,8 @@
 #include "interpreter_semantic_error.hpp"
 #include "expression.hpp"
 #include <sstream>
-
+#include <cmath>
+#include <tuple>
 
 enum Arity {Nullary, Unary, Binary, Ternary, M_ary, Any};
 
@@ -101,4 +102,42 @@ Expression IfFn::operator()(Args args, Environment &env) const {
     arity(Ternary, args);
     return args[0].getbool(env) ?
         args[1].eval(env) : args[2].eval(env);
+}
+
+Expression DrawFn::operator()(Args args, Environment &env) const {
+    arity(M_ary, args);
+    // TODO: Implement this
+    return Expression();
+}
+
+Expression PointFn::operator()(Args args, Environment &env) const {
+    arity(Binary, args);
+    return Expression(std::make_tuple(args[0].getnumber(env),
+                                      args[1].getnumber(env)));
+}
+
+Expression LineFn::operator()(Args args, Environment &env) const {
+    arity(Binary, args);
+    return Expression(args[0].getpoint(env), args[1].getpoint(env));
+}
+
+Expression ArcFn::operator()(Args args, Environment &env) const {
+    arity(Ternary, args);
+    return Expression(args[0].getpoint(env), args[1].getpoint(env),
+                      args[2].getnumber(env));
+}
+
+Expression SinFn::operator()(Args args, Environment &env) const {
+    arity(Unary, args);
+    return Expression(sin(args[0].getnumber(env)));
+}
+
+Expression CosFn::operator()(Args args, Environment &env) const {
+    arity(Unary, args);
+    return Expression(cos(args[0].getnumber(env)));
+}
+
+Expression ArctanFn::operator()(Args args, Environment &env) const {
+    arity(Unary, args);
+    return Expression(atan2(args[0].getnumber(env), args[1].getnumber(env)));
 }

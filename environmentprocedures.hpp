@@ -8,8 +8,7 @@
 class Environment;
 
 // Functions to be stored in the environment
-typedef std::function<Expression(std::vector<Expression>,
-                                 Environment &env)> EnvFunc;
+typedef std::function<Expression(Args args, Environment &env)> EnvFunc;
 
 struct NotFn {
     Expression operator()(Args args, Environment &env) const;
@@ -56,6 +55,34 @@ struct BeginFn {
 };
 
 struct IfFn {
+    Expression operator()(Args args, Environment &env) const;
+};
+
+struct DrawFn {
+    Expression operator()(Args args, Environment &env) const;
+};
+
+struct PointFn {
+    Expression operator()(Args args, Environment &env) const;
+};
+
+struct LineFn {
+    Expression operator()(Args args, Environment &env) const;
+};
+
+struct ArcFn {
+    Expression operator()(Args args, Environment &env) const;
+};
+
+struct SinFn {
+    Expression operator()(Args args, Environment &env) const;
+};
+
+struct CosFn {
+    Expression operator()(Args args, Environment &env) const;
+};
+
+struct ArctanFn {
     Expression operator()(Args args, Environment &env) const;
 };
 

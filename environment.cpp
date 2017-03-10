@@ -49,4 +49,11 @@ Environment::Environment() {
     this->define("-", SubFn());
     this->define("/", DivFn());
     this->define("pi", Expression(atan2(0, -1)));
+    this->define("draw", DrawFn());
+    this->define("point", PointFn());
+    this->define("line", LineFn());
+    this->define("arc", ArcFn());
+    this->define("sin", SinFn());
+    this->define("cos", CosFn());
+    this->define("arctan", ArctanFn());
 }
