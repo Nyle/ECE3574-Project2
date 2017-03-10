@@ -16,7 +16,7 @@ TEST_CASE("Test copying expression of type none", "[expression]") {
 TEST_CASE("Test converting None type expression to string", "[expression]") {
     Expression exp = Expression();
     std::string expasstring = exp.to_string();
-    REQUIRE(expasstring == "()");
+    REQUIRE(expasstring == "None");
 }
 
 TEST_CASE("Test converting Symbol type expression to string", "[expression]") {
