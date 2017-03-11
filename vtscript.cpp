@@ -49,9 +49,7 @@ int repl() {
     while (std::getline(std::cin, line)) {
         if (line.size() != 0) {// ignore empty input
             std::stringstream lstream(line);
-            if (run(lstream, interp) == EXIT_FAILURE) {
-                interp = Interpreter(); // reset on error
-            }
+            run(lstream, interp);
         }
         std::cout << "vtscript> ";
     }

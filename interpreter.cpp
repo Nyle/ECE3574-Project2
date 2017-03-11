@@ -1,6 +1,7 @@
 #include "interpreter.hpp"
 #include "tokenize.hpp"
 #include "interpreter_syntax_error.hpp"
+#include "interpreter_semantic_error.hpp"
 
 // For debugging
 #include <iostream>
@@ -42,5 +43,12 @@ void Interpreter::printast(std::ostream & out) {
 }
 
 Expression Interpreter::eval() {
-    return this->ast.eval(this->env);
+    Environment bu = this->env;
+    try {
+        return this->ast.eval(this->env);
+    } catch (InterpreterSemanticError e) {
+        // Reset the environment to the prior state on error
+        this->env = bu;
+        throw e;
+    }
 }

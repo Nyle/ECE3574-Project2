@@ -28,7 +28,9 @@ public:
     // Evaluate the current AST and return the resulting Expression
     // throws InterpreterSemanticError if a semantic error is encountered
     // the exception message string should document the nature of the semantic
-    // error 
+    // error
+    // If there is a semantic error the state of the environment is reset to how
+    // it was before the evaluation started
     Expression eval();
 };
     
