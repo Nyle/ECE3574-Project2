@@ -138,6 +138,6 @@ Expression CosFn::operator()(Args args, Environment &env) const {
 }
 
 Expression ArctanFn::operator()(Args args, Environment &env) const {
-    arity(Unary, args);
+    arity(Binary, args);
     return Expression(atan2(args[0].getnumber(env), args[1].getnumber(env)));
 }
