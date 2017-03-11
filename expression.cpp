@@ -166,7 +166,7 @@ std::string Expression::to_string() const {
             point_to_string(this->l.p2) + ")";
     case ARC:
         return "(" + point_to_string(this->a.center) + "),(" +
-            point_to_string(this->a.start) + ")," +
+            point_to_string(this->a.start) + ") " +
             std::to_string(this->a.angle);
     }
 }
