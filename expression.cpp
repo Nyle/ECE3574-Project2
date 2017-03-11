@@ -4,6 +4,7 @@
 #include "interpreter_syntax_error.hpp"
 #include <iostream>
 #include <sstream>
+#include <cmath>
 
 Expression::Expression() {
     this->type = NONE;
@@ -93,12 +94,17 @@ Arc Expression::getarc(Environment & env) const {
     return this->eval(env, ARC).a;
 }
 
+// Compare if a and b are equal to within acceptable machine arithmatic error
+bool almost_equal(double a, double b) {
+    return std::abs(a - b) < std::numeric_limits<double>::epsilon();
+}
+
 bool Expression::operator==(const Expression & exp) const noexcept {
     return this->type == exp.type && ( // Same type
         // Same value
         this->type == NONE ||
         (this->type == BOOL && this->b == exp.b) ||
-        (this->type == NUMBER && this->d == exp.d) ||
+        (this->type == NUMBER && almost_equal(this->d, exp.d)) ||
         (this->type == SYMBOL && this->s == exp.s) ||
         (this->type == POINT && this->p == exp.p) ||
         (this->type == LINE && this->l == exp.l) ||
