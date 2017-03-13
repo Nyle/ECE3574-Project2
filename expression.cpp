@@ -157,17 +157,22 @@ std::string Expression::to_string() const {
     case NUMBER:
         tmp << this->d;
         result.append(tmp.str());
+        break;
     case SYMBOL:
         result.append(this->s);
+        break;
     case POINT:
         result.append(point_to_string(this->p));
+        break;
     case LINE:
         result.append("(" + point_to_string(this->l.p1) + "),(" +
                       point_to_string(this->l.p2) + ")");
+        break;
     case ARC:
         result.append("(" + point_to_string(this->a.center) + "),(" +
                       point_to_string(this->a.start) + ") " +
                       std::to_string(this->a.angle));
+        break;
     }
     for (const auto &arg: this->getargs()) { result.append(arg.to_string()); }
     result.append(")");
