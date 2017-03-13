@@ -2,14 +2,19 @@
 #define QT_INTERPRETER_HPP
 
 #include <QObject>
+#include "interpreter.hpp"
 class QGraphicsItem;
 class QString;
 
 class QtInterpreter : public QObject {
+    Q_OBJECT
+private:
+    Interpreter interpreter;
+public:
     // Default construct an QtInterpreter with the default environment and an
     // empty AST
     QtInterpreter(QObject * parent = nullptr);
-
+signals:
     // a signal emitting a graphic to be drawn as a pointer
     void drawGraphic(QGraphicsItem * item);
 
@@ -18,7 +23,7 @@ class QtInterpreter : public QObject {
 
     // a signal emitting an error message
     void error(QString message);
-
+public slots:
     // a public slot that accepts and expression string and parses/evaluates it
     void parseAndEvaluate(QString entry);
 };
