@@ -145,35 +145,36 @@ std::string point_to_string(Point p) {
 }
 
 std::string Expression::to_string() const {
+    std::string result = "(";
     std::stringstream tmp;
     switch (this->type) {
     case NONE:
-        return "None";
+        result.append("None");
         break;
     case BOOL:
-        return (this->b ? "True" : "False");
+        result.append(this->b ? "True" : "False");
         break;
     case NUMBER:
         tmp << this->d;
-        return tmp.str();
-        break;
+        result.append(tmp.str());
     case SYMBOL:
-        return this->s;
+        result.append(this->s);
     case POINT:
-        return point_to_string(this->p);
+        result.append(point_to_string(this->p));
     case LINE:
-        return "(" + point_to_string(this->l.p1) + "),(" +
-            point_to_string(this->l.p2) + ")";
+        result.append("(" + point_to_string(this->l.p1) + "),(" +
+                      point_to_string(this->l.p2) + ")");
     case ARC:
-        return "(" + point_to_string(this->a.center) + "),(" +
-            point_to_string(this->a.start) + ") " +
-            std::to_string(this->a.angle);
+        result.append("(" + point_to_string(this->a.center) + "),(" +
+                      point_to_string(this->a.start) + ") " +
+                      std::to_string(this->a.angle));
     }
+    for (const auto &arg: this->getargs()) { result.append(arg.to_string()); }
+    result.append(")");
+    return result;
 }
 
 std::ostream& operator<<(std::ostream &strm, const Expression &exp) {
-    strm << "(" << exp.to_string();
-    for (const auto &arg: exp.getargs()) { strm << arg; }
-    strm << ")";
+    strm << exp.to_string();
     return strm;
 }
