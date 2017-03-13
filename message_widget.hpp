@@ -2,11 +2,17 @@
 #define MESSAGE_WIDGET_HPP
 
 #include <QWidget>
+#include <QLineEdit>
+class QString;
 
 class MessageWidget : public QWidget {
+    Q_OBJECT
+private:
+    QLineEdit * text;
+public:
     // Default construct a MessageWidget displaying no text
     MessageWidget(QWidget * parent = nullptr);
-    
+public slots:
     // a public slot accepting an informational message to display, clearing
     // any error formatting
     void info(QString message);
