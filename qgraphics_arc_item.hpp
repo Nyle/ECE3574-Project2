@@ -7,6 +7,8 @@ class QStyleOptionGraphicsItem;
 class QWidget;
 
 class QGraphicsArcItem : public QGraphicsEllipseItem {
+    Q_OBJECT
+public:
     // Re-implements paint method to draw arc without lines from center to
     // ends
     void paint(QPainter * painter,
