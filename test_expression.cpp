@@ -16,14 +16,14 @@ TEST_CASE("Test copying expression of type none", "[expression]") {
 TEST_CASE("Test converting None type expression to string", "[expression]") {
     Expression exp = Expression();
     std::string expasstring = exp.to_string();
-    REQUIRE(expasstring == "None");
+    REQUIRE(expasstring == "(None)");
 }
 
 TEST_CASE("Test converting Symbol type expression to string", "[expression]") {
     std::string attom = "test";
     Expression exp = Expression(attom);
     std::string expasstring = exp.to_string();
-    REQUIRE(expasstring == attom);
+    REQUIRE(expasstring == "(" + attom + ")");
 }
 
 TEST_CASE("Test adding argument to None type expression",
