@@ -27,6 +27,13 @@ struct Arc {
     }
 };
 
+struct Drawable {
+    Type type;
+    Point point;
+    Line line;
+    Arc arc;
+};
+    
 class Expression {
 private:
     // Fields for the attom value
@@ -70,6 +77,8 @@ public:
     Line getline(Environment & env) const;
     // Returns literal Arc value
     Arc getarc(Environment & env) const;
+    // Returns literal drawable value
+    Drawable getdrawable(Environment & env) const;
     // Equality operator for two Expressions, two expressions are equal if the
     // have the same type, atom value, and number of arguments
     bool operator==(const Expression & exp) const noexcept;
@@ -84,9 +93,13 @@ public:
     Expression eval(Environment & env, Type t) const;
     // Return the attom as a string
     std::string to_string() const;
+    // Returns the type if it is one of the drawing types. If it is not a
+    // drawing type this throws an error
+    Type getdrawtype() const;
 };
-
-#endif // EXPRESSION_HPP
 
 // Overload of << to allow easy printing
 std::ostream& operator<<(std::ostream &strm, const Expression &exp);
+
+#endif // EXPRESSION_HPP
+

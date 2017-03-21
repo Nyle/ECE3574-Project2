@@ -32,6 +32,9 @@ public:
     // If there is a semantic error the state of the environment is reset to how
     // it was before the evaluation started
     Expression eval();
+
+    // Gets the list of expressions that need to be drawn
+    std::vector<Drawable> getToDraw();
 };
     
 #endif // INTERPRETER_HPP

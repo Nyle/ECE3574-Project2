@@ -1,5 +1,5 @@
 #include "canvas_widget.hpp"
-
+#include <QVBoxLayout>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -7,7 +7,10 @@
 CanvasWidget::CanvasWidget(QWidget * parent) : QWidget(parent) {
     scene = new QGraphicsScene();
     view = new QGraphicsView(scene);
-    view->show();
+
+    QVBoxLayout * layout = new QVBoxLayout();
+    layout->addWidget(view);
+    setLayout(layout);
 }
 
 void CanvasWidget::addGraphic(QGraphicsItem * item) {

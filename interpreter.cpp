@@ -52,3 +52,7 @@ Expression Interpreter::eval() {
         throw e;
     }
 }
+
+std::vector<Drawable> Interpreter::getToDraw() {
+    return this->env.getToDraw();
+}

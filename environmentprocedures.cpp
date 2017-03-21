@@ -14,14 +14,14 @@ void arity(Arity a, Args args) {
     size_t nargs = args.size();
     if ((a == Nullary && nargs == 0) || (a == Unary && nargs == 1) ||
         (a == Binary && nargs == 2) || (a == Ternary && nargs == 3) ||
-        (a == M_ary && nargs >= 2) || (a == Any)) {
+        (a == M_ary && nargs >= 1) || (a == Any)) {
         return;
     } 
     std::stringstream stream;
     stream << "Error: expected " << (
         a == Nullary ? "0 arguments " : a == Unary ? "1 argument  " :
         a == Binary ? "2 arguments " : a == Ternary ? "3 arguments " :
-        a == M_ary ? ">= 2 arguments " : "undefined number of arguments "
+        a == M_ary ? ">= 1 arguments " : "undefined number of arguments "
         ) << "but got " << nargs; 
     throw InterpreterSemanticError(stream.str());
 }
@@ -106,7 +106,9 @@ Expression IfFn::operator()(Args args, Environment &env) const {
 
 Expression DrawFn::operator()(Args args, Environment &env) const {
     arity(M_ary, args);
-    // TODO: Implement this
+    for (auto const &arg: args) {
+        env.addToDraw(arg.getdrawable(env));
+    }
     return Expression();
 }
 

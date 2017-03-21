@@ -94,6 +94,29 @@ Arc Expression::getarc(Environment & env) const {
     return this->eval(env, ARC).a;
 }
 
+Drawable Expression::getdrawable(Environment & env) const {
+    Expression evaluated = this->eval(env);
+    Drawable result;
+    switch (evaluated.type) {
+    case POINT:
+        result.type = POINT;
+        result.point = evaluated.p;
+        break;
+    case LINE:
+        result.type = LINE;
+        result.line = evaluated.l;
+        break;
+    case ARC:
+        result.type = ARC;
+        result.arc = evaluated.a;
+        break;
+    default:
+        throw InterpreterSemanticError(
+            "Error: Attempt to draw non-drawable expression");
+    }
+    return result;
+}
+
 // Compare if a and b are equal to within acceptable machine arithmatic error
 bool almost_equal(double a, double b) {
     return std::abs(a - b) < std::numeric_limits<double>::epsilon();

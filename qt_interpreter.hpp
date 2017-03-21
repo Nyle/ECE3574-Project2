@@ -5,11 +5,15 @@
 #include "interpreter.hpp"
 class QGraphicsItem;
 class QString;
+struct Drawable;
 
 class QtInterpreter : public QObject {
     Q_OBJECT
 private:
     Interpreter interpreter;
+    // Convert a graphics type expression to a QGraphicsItem corresponding to
+    // the item that that expression should draw
+    QGraphicsItem * drawableToGraphic(Drawable drw);
 public:
     // Default construct an QtInterpreter with the default environment and an
     // empty AST

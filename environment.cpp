@@ -31,6 +31,7 @@ EnvFunc Environment::retrieve(std::string symbol) {
 }
 
 Environment::Environment() {
+    this->todraw = std::vector<Drawable>();
     this->map = std::map<std::string, EnvFunc>();
     // Put in default environment
     this->define("define", DefineFn());
@@ -56,4 +57,14 @@ Environment::Environment() {
     this->define("sin", SinFn());
     this->define("cos", CosFn());
     this->define("arctan", ArctanFn());
+}
+
+void Environment::addToDraw(Drawable exp) {
+    this->todraw.push_back(exp);
+}
+
+std::vector<Drawable> Environment::getToDraw() {
+    std::vector<Drawable> res = this->todraw;
+    this->todraw = std::vector<Drawable>();
+    return res;
 }
