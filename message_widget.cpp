@@ -14,9 +14,6 @@ MessageWidget::MessageWidget(QWidget * parent) : QWidget(parent) {
     layout->addWidget(text);
     setLayout(layout);
 
-    setStyleSheet("QLineEdit {"
-                  "  color: red"
-                  "}");
 }
 
 void MessageWidget::info(QString message) {
@@ -28,5 +25,7 @@ void MessageWidget::info(QString message) {
 void MessageWidget::error(QString message) {
     text->setText(message);
     text->selectAll();
-    setStyleSheet("color: red");
+    setStyleSheet("QLineEdit {"
+                  "  color: red"
+                  "}");
 }
