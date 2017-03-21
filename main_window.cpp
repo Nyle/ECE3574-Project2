@@ -1,3 +1,5 @@
+#include <fstream>
+#include <sstream>
 #include <QApplication>
 #include <QVBoxLayout>
 #include "main_window.hpp"
@@ -25,9 +27,14 @@ MainWindow::MainWindow(QWidget * parent) : QWidget(parent) {
     layout->addWidget(canvas);
     layout->addWidget(repl);
     setLayout(layout);
+
+    setMinimumSize(800, 600);
 }
 
 MainWindow::MainWindow(std::string filename, QWidget * parent) :
-    MainWindow(parent){
-    
+    MainWindow(parent) {
+    std::ifstream in(filename);
+    std::stringstream instream;
+    instream << in.rdbuf();
+    interpreter->parseAndEvaluate(instream.str().c_str());
 }
