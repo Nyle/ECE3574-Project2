@@ -4,11 +4,13 @@
 #include <QWidget>
 #include <QLineEdit>
 class QString;
+class QLabel;
 
 class MessageWidget : public QWidget {
     Q_OBJECT
 private:
     QLineEdit * text;
+    QLabel * label;
 public:
     // Default construct a MessageWidget displaying no text
     MessageWidget(QWidget * parent = nullptr);

@@ -1,17 +1,22 @@
 #include "message_widget.hpp"
 #include <QString>
 #include <QHBoxLayout>
+#include <QLabel>
 
 MessageWidget::MessageWidget(QWidget * parent) : QWidget(parent) {
-    text = new QLineEdit(this);
-    text->setReadOnly(false);
+    text = new QLineEdit();
+    text->setReadOnly(true);
+
+    label = new QLabel("Message:");
     
-    QHBoxLayout * layout = new QHBoxLayout(this);
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->addWidget(label);
     layout->addWidget(text);
+    setLayout(layout);
+
     setStyleSheet("QLineEdit {"
                   "  color: red"
                   "}");
-    setLayout(layout);
 }
 
 void MessageWidget::info(QString message) {
