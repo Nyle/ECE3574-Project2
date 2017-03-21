@@ -2,8 +2,19 @@
 #define MAIN_WINDOW_HPP
 
 #include <QWidget>
+class MessageWidget;
+class CanvasWidget;
+class REPLWidget;
+class QtInterpreter;
 
 class MainWindow : public QWidget {
+    Q_OBJECT
+private:
+    MessageWidget * message;
+    CanvasWidget * canvas;
+    REPLWidget * repl;
+    QtInterpreter * interpreter;
+public:
     // Default construct a MainWindow
     MainWindow(QWidget * parent = nullptr);
     
