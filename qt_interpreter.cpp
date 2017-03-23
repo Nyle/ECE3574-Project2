@@ -12,7 +12,7 @@
 #include <cmath>
 
 // Radius for displaying points
-const qreal RADIUS = 0.2;
+const qreal RADIUS = 2;
 QGraphicsEllipseItem * pointToGraphic(Point point) {
     return new QGraphicsEllipseItem(std::get<0>(point) - RADIUS,
                                     std::get<1>(point) - RADIUS,
