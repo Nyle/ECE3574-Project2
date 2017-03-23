@@ -50,8 +50,7 @@ QGraphicsItem * QtInterpreter::drawableToGraphic(Drawable drw) {
     return result;
 }
 
-QtInterpreter::QtInterpreter(QObject * parent) {
-    interpreter = Interpreter();
+QtInterpreter::QtInterpreter(QObject * parent) : QObject(parent) {
 }
 
 void QtInterpreter::parseAndEvaluate(QString entry) {
