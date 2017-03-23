@@ -40,19 +40,12 @@ QGraphicsArcItem * arcToGraphic(Arc arc) {
 
 QGraphicsItem * QtInterpreter::drawableToGraphic(Drawable drw) {
     QGraphicsItem * result = 0;
-    switch (drw.type) {
-    case POINT:
-        return pointToGraphic(drw.point);
-        break;
-    case LINE:
+    if (drw.type == POINT) {
+        result = pointToGraphic(drw.point);
+    } else if (drw.type == LINE) {
         result = lineToGraphic(drw.line);
-        break;
-    case ARC:
+    } else if (drw.type == ARC) {
         result = arcToGraphic(drw.arc);
-        break;
-    default:
-        result = 0;
-        // We should never reach here
     }
     return result;
 }
