@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget * parent) : QWidget(parent) {
     message = new MessageWidget();
     canvas = new CanvasWidget();
     repl = new REPLWidget();
-    interpreter = new QtInterpreter();
+    interpreter = new QtInterpreter(this);
     QEventLoop::connect(interpreter, SIGNAL(info(QString)),
                         message, SLOT(info(QString)));
     QEventLoop::connect(interpreter, SIGNAL(error(QString)),
