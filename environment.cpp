@@ -3,13 +3,6 @@
 #include "environment.hpp"
 #include "interpreter_semantic_error.hpp"
 
-// Make a function that just returns the expression
-EnvFunc makeexpfunc(Expression exp) {
-    return [exp](Args args, Environment &env) {
-        return exp;
-    };
-}
-
 void Environment::define(std::string symbol, EnvFunc func) {
     if (this->map.count(symbol)) {
         throw InterpreterSemanticError(
@@ -19,7 +12,9 @@ void Environment::define(std::string symbol, EnvFunc func) {
 }
 
 void Environment::define(std::string symbol, Expression exp) {
-    this->define(symbol, makeexpfunc(exp));
+    this->define(symbol, [exp](Args args, Environment &env) {
+        return exp;
+    });
 }
 
 EnvFunc Environment::retrieve(std::string symbol) {
