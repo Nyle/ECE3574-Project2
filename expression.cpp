@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <cmath>
+#include <limits>
 
 Expression::Expression() {
     this->type = NONE;
