@@ -17,17 +17,12 @@ const Token CLOSE_TOKEN = Token(1, CLOSE);
 const Token TRUE = "True";
 const Token FALSE = "False";
 
-// Whether or not c is a character that will end any preceding symbol
-bool breakssymbols(char c) {
-    return c == OPEN || c == CLOSE || c == COMMENT || (isspace(c) != 0) ||
-        (isprint(c) == 0);
-}
-
 TokenList tokenize(std::istream & in) {
     TokenList tokens; // List of tokens found
     Token symbol = "";               // Hold multi-character symbols
     for (char tmp = in.get(); !in.eof(); tmp = in.get()) {
-        if (breakssymbols(tmp)) {
+        if (tmp == OPEN || tmp == CLOSE || tmp == COMMENT ||
+            (isspace(tmp) != 0) || (isprint(tmp) == 0)) {
             if (symbol.length() > 0) {
                 tokens.push(symbol);
                 symbol = "";
