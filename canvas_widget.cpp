@@ -5,7 +5,7 @@
 #include <QGraphicsView>
 
 CanvasWidget::CanvasWidget(QWidget * parent) : QWidget(parent) {
-    scene = new QGraphicsScene();
+    scene = new QGraphicsScene(this);
     view = new QGraphicsView(scene);
 
     QVBoxLayout * layout = new QVBoxLayout();
