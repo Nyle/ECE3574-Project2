@@ -6,7 +6,10 @@
 MessageWidget::MessageWidget(QWidget * parent) : QWidget(parent) {
     text = new QLineEdit();
     text->setReadOnly(true);
-
+    defaultPalette = text->palette();
+    redPalette = defaultPalette;
+    redPalette.setColor(QPalette::Highlight, QColor(Qt::red));
+    
     label = new QLabel("Message:");
     
     QHBoxLayout * layout = new QHBoxLayout();
@@ -19,13 +22,12 @@ MessageWidget::MessageWidget(QWidget * parent) : QWidget(parent) {
 void MessageWidget::info(QString message) {
     text->setText(message);
     text->deselect();
-    setStyleSheet("");
+    text->setPalette(defaultPalette);
 }
     
 void MessageWidget::error(QString message) {
     text->setText(message);
     text->selectAll();
-    setStyleSheet("QLineEdit {"
-                  "  color: red"
-                  "}");
+    text->setPalette(redPalette);
+
 }

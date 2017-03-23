@@ -5,12 +5,14 @@
 #include <QLineEdit>
 class QString;
 class QLabel;
+class QPalette;
 
 class MessageWidget : public QWidget {
     Q_OBJECT
 private:
     QLineEdit * text;
     QLabel * label;
+    QPalette defaultPalette, redPalette;
 public:
     // Default construct a MessageWidget displaying no text
     MessageWidget(QWidget * parent = nullptr);
