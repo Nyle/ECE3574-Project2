@@ -462,3 +462,22 @@ TEST_CASE( "Test all syntactically and semantically CORRECT files.", "[interpret
     REQUIRE(result == expected_result);
   }
 }
+
+TEST_CASE("Test draw method with good input", "[interpreter]") {
+    std::string program = "(draw (point 0 0) (line (point 0 0) (point 10 0)) (arc (point 0 0) (point 10 0) 3.2))";
+    std::istringstream iss(program);
+    Interpreter interp;
+
+    REQUIRE(interp.parse(iss));
+    REQUIRE(interp.eval() == Expression());
+}
+
+TEST_CASE("Test draw method with bad input", "[interpreter]") {
+    std::string program = "(draw (point 0 0) (line (point 0 0) (point 10 0)) (arc (point 0 0) (point 10 0) 3.2) 10)";
+    std::istringstream iss(program);
+    Interpreter interp;
+
+    REQUIRE(interp.parse(iss));
+    REQUIRE_THROWS_AS(interp.eval(), InterpreterSemanticError);
+}
+
