@@ -38,10 +38,6 @@ std::string Interpreter::getparsingerror() const {
     return this->parsingerror;
 }
 
-void Interpreter::printast(std::ostream & out) {    
-    out << this->ast << "\n";
-}
-
 Expression Interpreter::eval() {
     Environment bu = this->env;
     try {
