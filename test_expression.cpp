@@ -15,13 +15,13 @@ TEST_CASE("Test copying expression of type none and of graphics types",
     REQUIRE_NOTHROW(Expression copy = Expression(exp));
     // Point
     exp = Expression(std::make_tuple(0., 0.));
-    REQUIRE_NOTHROW(Expression copy = Expression());
+    REQUIRE_NOTHROW(Expression copy = Expression(exp));
     // Line
     exp = Expression(std::make_tuple(0., 0.), std::make_tuple(10., 0.));
-    REQUIRE_NOTHROW(Expression copy = Expression());
+    REQUIRE_NOTHROW(Expression copy = Expression(exp));
     // Arc
     exp = Expression(std::make_tuple(0., 0.), std::make_tuple(10., 0.), 2.3);
-    REQUIRE_NOTHROW(Expression copy = Expression());
+    REQUIRE_NOTHROW(Expression copy = Expression(exp));
 }
 
 TEST_CASE("Test converting None type expression to string", "[expression]") {
