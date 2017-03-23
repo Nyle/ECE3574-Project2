@@ -26,120 +26,113 @@ void arity(Arity a, Args args) {
     throw InterpreterSemanticError(stream.str());
 }
 
-Expression NotFn::operator()(Args args, Environment &env) const {
+EnvFunc makeBinaryBoolFn(std::function<bool(bool,bool)> func) {
+    return [func](Args args, Environment &env) {
+        arity(M_ary, args);
+        bool res = args[0].getbool(env);
+        for(size_t i = 1; i < args.size(); i++) {
+            res = func(res, args[i].getbool(env));
+        }
+        return Expression(res);
+    };
+}
+
+EnvFunc makeCmpFn(std::function<bool(float,float)> func) {
+    return [func](Args args, Environment &env) {
+        arity(Binary, args);
+        return Expression(func(args[0].getnumber(env),
+                                     args[1].getnumber(env)));
+    };
+}
+
+EnvFunc makePlusMulFn(std::function<float(float,float)> func) {
+    return [func](Args args, Environment &env) {
+        arity(M_ary, args);
+        double res = args[0].getnumber(env);
+        for(size_t i = 1; i < args.size(); i++) {
+            res = func(res, args[i].getnumber(env));
+        }
+        return Expression(res);
+    };
+}
+
+EnvFunc NotFn = [](Args args, Environment &env) {
     arity(Unary, args);
     return Expression(!args[0].getbool(env));
-}
+};
 
-BinaryBoolFn::BinaryBoolFn(std::function<bool(bool,bool)> func) {
-    this->func = func;
-}
-
-Expression BinaryBoolFn::operator()(Args args, Environment &env) const {
-    arity(M_ary, args);
-    bool res = args[0].getbool(env);
-    for(size_t i = 1; i < args.size(); i++) {
-        res = this->func(res, args[i].getbool(env));
-    }
-    return Expression(res);
-}
-
-CmpFn::CmpFn(std::function<bool(float,float)> func) {
-    this->func = func;
-}
-
-Expression CmpFn::operator()(Args args, Environment &env) const {
-    arity(Binary, args);
-    return Expression(this->func(args[0].getnumber(env),
-                                 args[1].getnumber(env)));
-}
-
-
-PlusMulFn::PlusMulFn(std::function<float(float,float)> func) {
-    this->func = func;
-}
-
-Expression PlusMulFn::operator()(Args args, Environment &env) const {
-    arity(M_ary, args);
-    double res = args[0].getnumber(env);
-    for(size_t i = 1; i < args.size(); i++) {
-        res = this->func(res, args[i].getnumber(env));
-    }
-    return Expression(res);
-}
-
-Expression SubFn::operator()(Args args, Environment &env) const {
+EnvFunc SubFn = [](Args args, Environment &env) {
     if (args.size() == 1) {// Instead this should be the negative operator
         return Expression(-1 * args[0].getnumber(env));
     }
     arity(Binary, args);
     return Expression(args[0].getnumber(env) -
                       args[1].getnumber(env));
-}
+};
 
-Expression DivFn::operator()(Args args, Environment &env) const {
+EnvFunc DivFn = [](Args args, Environment &env) {
     arity(Binary, args);
     return Expression(args[0].getnumber(env) /
                       args[1].getnumber(env));
-}
-
-Expression DefineFn::operator()(Args args, Environment &env) const {
+};
+    
+EnvFunc DefineFn = [](Args args, Environment &env) {
     arity(Binary, args);
     Expression res = args[1].eval(env);
     env.define(args[0].getsymbol(), res);
     return res;
-}
+};
 
-Expression BeginFn::operator()(Args args, Environment &env) const {
+EnvFunc BeginFn = [](Args args, Environment &env) {
     Expression result;
     for(auto const &arg: args) {
         result = arg.eval(env);
     }
     return result;
-}
+};
 
-Expression IfFn::operator()(Args args, Environment &env) const {
+EnvFunc IfFn = [](Args args, Environment &env) {
     arity(Ternary, args);
     return args[0].getbool(env) ?
         args[1].eval(env) : args[2].eval(env);
-}
+};
 
-Expression DrawFn::operator()(Args args, Environment &env) const {
+EnvFunc DrawFn = [](Args args, Environment &env) {
     arity(M_ary, args);
     for (auto const &arg: args) {
         env.addToDraw(arg.getdrawable(env));
     }
     return Expression();
-}
+};
 
-Expression PointFn::operator()(Args args, Environment &env) const {
+EnvFunc PointFn = [](Args args, Environment &env) {
     arity(Binary, args);
     return Expression(std::make_tuple(args[0].getnumber(env),
                                       args[1].getnumber(env)));
-}
+};
 
-Expression LineFn::operator()(Args args, Environment &env) const {
+EnvFunc LineFn = [](Args args, Environment &env) {
     arity(Binary, args);
     return Expression(args[0].getpoint(env), args[1].getpoint(env));
-}
+};
 
-Expression ArcFn::operator()(Args args, Environment &env) const {
+EnvFunc ArcFn = [](Args args, Environment &env) {
     arity(Ternary, args);
     return Expression(args[0].getpoint(env), args[1].getpoint(env),
                       args[2].getnumber(env));
-}
+};
 
-Expression SinFn::operator()(Args args, Environment &env) const {
+EnvFunc SinFn = [](Args args, Environment &env) {
     arity(Unary, args);
     return Expression(sin(args[0].getnumber(env)));
-}
+};
 
-Expression CosFn::operator()(Args args, Environment &env) const {
+EnvFunc CosFn = [](Args args, Environment &env) {
     arity(Unary, args);
     return Expression(cos(args[0].getnumber(env)));
-}
+};
 
-Expression ArctanFn::operator()(Args args, Environment &env) const {
+EnvFunc ArctanFn = [](Args args, Environment &env) {
     arity(Binary, args);
     return Expression(atan2(args[0].getnumber(env), args[1].getnumber(env)));
-}
+};
