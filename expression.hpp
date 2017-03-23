@@ -63,8 +63,6 @@ public:
     Expression(const Point & center,
                const Point & start,
                double angle);
-    // Copy constructor
-    Expression(const Expression & exp);
     // Returns the symbol
     std::string getsymbol() const;
     // Evaluates and returns numerical result

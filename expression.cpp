@@ -43,30 +43,6 @@ Expression::Expression(const Point & center, const Point & start,
     this->a = {center, start, angle};
 }
 
-Expression::Expression(const Expression & exp) {
-    this->type = exp.type;
-    switch(this->type) {
-    case NONE:
-        break;
-    case BOOL:
-        this->b = exp.b;
-        break;
-    case NUMBER:
-        this->d = exp.d;
-        break;
-    case SYMBOL:
-        this->s = exp.s;
-        break;
-    case POINT:
-        this->p = exp.p;
-    case LINE:
-        this->l = exp.l;
-    case ARC:
-        this->a = exp.a;
-    }
-    this->arguments = Args(exp.arguments);
-}
-
 std::string Expression::getsymbol() const {
     if (this->type != SYMBOL) {
         throw InterpreterSemanticError(
