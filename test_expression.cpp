@@ -8,22 +8,6 @@
 #include "interpreter_syntax_error.hpp"
 #include "interpreter_semantic_error.hpp"
 
-TEST_CASE("Test copying expression of type none and of graphics types",
-          "[expression]") {
-    // None
-    Expression exp = Expression();
-    REQUIRE_NOTHROW(Expression copy = Expression(exp));
-    // Point
-    exp = Expression(std::make_tuple(0., 0.));
-    REQUIRE_NOTHROW(Expression copy = Expression(exp));
-    // Line
-    exp = Expression(std::make_tuple(0., 0.), std::make_tuple(10., 0.));
-    REQUIRE_NOTHROW(Expression copy = Expression(exp));
-    // Arc
-    exp = Expression(std::make_tuple(0., 0.), std::make_tuple(10., 0.), 2.3);
-    REQUIRE_NOTHROW(Expression copy = Expression(exp));
-}
-
 TEST_CASE("Test converting None type expression to string", "[expression]") {
     Expression exp = Expression();
     std::string expasstring = exp.to_string();
