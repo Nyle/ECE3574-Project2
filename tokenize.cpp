@@ -27,8 +27,7 @@ TokenList tokenize(std::istream & in) {
                 tokens.push(symbol);
                 symbol = "";
             }
-            if (tmp == COMMENT) {
-                // Read to the end of the comment
+            if (tmp == COMMENT) { // We should read to the end of the comment
                 while ((tmp = in.get()) != '\n' && !in.eof()) {}
             } else if (tmp == OPEN || tmp == CLOSE) {
                 tokens.push(Token(1, tmp));
