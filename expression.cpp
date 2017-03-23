@@ -87,14 +87,6 @@ Point Expression::getpoint(Environment & env) const {
     return this->eval(env, POINT).p;
 }
 
-Line Expression::getline(Environment & env) const {
-    return this->eval(env, LINE).l;
-}
-
-Arc Expression::getarc(Environment & env) const {
-    return this->eval(env, ARC).a;
-}
-
 Drawable Expression::getdrawable(Environment & env) const {
     Expression evaluated = this->eval(env);
     Drawable result;

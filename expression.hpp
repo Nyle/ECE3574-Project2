@@ -73,10 +73,6 @@ public:
     bool getbool(Environment & env) const;
     // Returns literal Point value
     Point getpoint(Environment & env) const;
-    // Returns literal Line value
-    Line getline(Environment & env) const;
-    // Returns literal Arc value
-    Arc getarc(Environment & env) const;
     // Returns literal drawable value
     Drawable getdrawable(Environment & env) const;
     // Equality operator for two Expressions, two expressions are equal if the
