@@ -23,6 +23,7 @@ public:
     void testArc();
     void testEnvRestore();
     void testInitWithFile();
+    void testHistory();
 
 private:
     MainWindow w;
@@ -219,6 +220,27 @@ void TestGUI::testInitWithFile() {
              "Expenced a point on the arc in the scene. Not found.");
     QVERIFY2(scene->itemAt(QPointF(100, -10), QTransform()) != 0,
              "Expenced a point on the arc in the scene. Not found.");
+}
+
+void TestGUI::testHistory() {
+    QVERIFY(repl && replEdit);
+    QVERIFY(canvas && scene);
+
+    QString prog = "(+ 1 1)";
+    
+    // Enter a line
+    QTest::keyClicks(replEdit, prog);
+    QVERIFY2(replEdit->text() == prog,
+             "Expected input to hold entered text");
+    QTest::keyClick(replEdit, Qt::Key_Return, Qt::NoModifier);
+    QVERIFY2(replEdit->text() == "",
+             "Expected input to be cleared after evaluating");
+    QTest::keyClick(replEdit, Qt::Key_Up, Qt::NoModifier);
+    QVERIFY2(replEdit->text() == prog,
+             "Expected previous input to be recalled");
+    QTest::keyClick(replEdit, Qt::Key_Down, Qt::NoModifier);
+    QVERIFY2(replEdit->text() == "",
+             "Expected blank line to be recalled");
 }
 
 QTEST_MAIN(TestGUI)
